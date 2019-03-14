@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Joona Marjakangas">
+
+    <title>Titeeni-city - {{player.username}}</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  </head>
+
+  <body>
+    <div class="container">
+    <h2>Hei {{player.username}} <small>({{player.guild}})</small>!</h2>
+    <p>Alla voit muokata pelihahmoasi valitsemalla hahmosi asusteet, taisteluvälineen ja juoman. Älä kuitenkaan panikoi, mikäli vaihtoehdot näyttävät niukoilta, sillä lisää kaikenlaisia esineitä voit löytää salaperäisiä qr-koodeja seuraamalla.</p>
+    <form action="" method="post" id="register_form">
+        <div class="form-group">
+          <label for="hat">Hattu:</label>
+          <select id="hat" name="hat" class="form-control">
+            <option value="null" {% if not player.hat %}selected{% endif %}>Ei hattua</option>
+            {% for avail_hat in player.avail_hats %}
+            <option value="{{avail_hat.value}}" {% if avail_hat.value == player.hat %}selected{% endif %}>{{avail_hat.label}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="clothing">Vaatetus:</label>
+          <select id="clothing" name="clothing" class="form-control">
+            <option value="null" {% if not player.clothing %}selected{% endif %}>Ei vaatteita</option>
+            {% for avail_clothing in player.avail_clothings %}
+            <option value="{{avail_clothing.value}}" {% if avail_clothing.value == player.clothing %}selected{% endif %}>{{avail_clothing.label}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="item">Taisteluväline/esine:</label>
+          <select id="item" name="item" class="form-control">
+            <option value="null" {% if not player.item %}selected{% endif %}>Ei esinettä</option>
+            {% for avail_item in player.avail_items %}
+            <option value="{{avail_item.value}}" {% if avail_item.value == player.item %}selected{% endif %}>{{avail_item.label}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="drink">Juoma:</label>
+          <select id="drink" name="drink" class="form-control">
+            <option value="null" {% if not player.drink %}selected{% endif %}>Ei juotavaa :((((</option>
+            {% for avail_drink in player.avail_drinks %}
+            <option value="{{avail_drink.value}}" {% if avail_drink.value == player.drink %}selected{% endif %}>{{avail_drink.label}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="g-recaptcha" data-sitekey="{{captchakey}}"></div>
+        <div class="form-group" style="margin-top:20px;">
+          <input type="submit" class="btn btn-primary btn-large" value="Tallenna">
+        </div>
+    </form>
+    </div>
+  </body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Joona Marjakangas">
+
+    <title>Titeeni-city</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  </head>
+
+  <body>
+    <div class="container">
+    <h2>Rekisteröidy titeeni.cityyn</h2>
+    <form action="/" method="post" id="register_form">
+        <div class="form-group">
+          <label for="username">*Pelaajanimi: <small>Välilyönnit eivät sallittuja</small></label>
+          <input type="text" class="form-control" id="username" name="username">
+        </div>
+        <div class="form-group">
+          <label for="email">*Sähköposti: <small>Välilyönnit eivät sallittuja</small></label>
+          <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="guild">*Kilta:</label>
+          <select id="guild" name="guild" class="form-control">
+            <option value="TiK">TiK</option>
+            <option value="TiTe">TiTe</option>
+            <option value="OTiT">OTiT</option>
+            <option value="Cluster">Cluster</option>
+            <option value="Digit">Digit</option>
+          </select>
+        </div>
+        <div class="g-recaptcha" data-sitekey="{{captchakey}}"></div>
+        <div class="form-group" style="margin-top:20px;">
+          <input type="submit" class="btn btn-primary btn-large" value="Rekisteröidy titeenicityyn">
+        </div>
+    </form>
+    </div>
+  </body>
+
+</html>
