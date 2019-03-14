@@ -20,7 +20,7 @@
 
 ## Suorittaminen
 
-cd path/to/titeenicity
-set FLASK_APP=titeeni.py
-set FLASK_ENV=development
+cd path/to/titeenicity  
+set FLASK_APP=titeeni.py  
+set FLASK_ENV=development  
 flask run
