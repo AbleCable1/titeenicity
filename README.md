@@ -8,7 +8,6 @@
 - Lisäksi tulee luoda seuraavat DynamoDB-taulut:
   - Table name: titeeni-player, Primary key: "key" (tyyppiä string)
   - Table name: titeeni-usedqrcode, Primary key: "qrcode_key" (tyyppiä string)
-- Myös AWS SES tulee olla konfiguroituna käytettävällä AWS-tilillä
 - Lisäksi seuraavat titeeni.py-tiedostosta löytyvät vakiot tulee asettaa käytetyn ympäristön mukaisesti.
   - BASE_URL: haluttu domain, paikallisessa ympäristössä esim. http://localhost:5000/ (kauttamerkki lopussa on oleellinen)
   - AWS_EMAIL_SENDER_ADDRESS: Sähköpostiosoite, jota voidaan käyttää viestien lähettämiseen SES:illä
