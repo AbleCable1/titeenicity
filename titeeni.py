@@ -7,10 +7,10 @@ from botocore.exceptions import ClientError
 #Environment constants, redefine depending on the environment
 BASE_URL = "http://localhost:5000/"
 AWS_EMAIL_SENDER_ADDRESS = "TiteeniCity <noreply@titeeni.city>"
-AWS_SES_REGION = "eu-west-1"
 AWS_DYNAMODB_REGION = "eu-central-1"
 CAPTCHA_SECRET_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
 CAPTCHA_PUBLIC_KEY = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+MAILGUN_API_KEY = ""
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -19,10 +19,10 @@ app = Flask(__name__, static_url_path='/static')
 # General constants
 
 RAW_F = ""
-with open("qrcodes.json", "r") as f:
+with open("qrcodes.json", "r", encoding="utf-8") as f:
     RAW_F = f.read()
 QR_CODES = json.loads(RAW_F)
-with open("items.json", "r") as f:
+with open("items.json", "r", encoding="utf-8") as f:
     RAW_F = f.read()
 ITEM_IMGURLS_AND_NAMES = json.loads(RAW_F)
 
@@ -64,38 +64,17 @@ BODY_HTML_REGISTRATION_SUCCESS = """<html>
 
 
 def send_email(recipient, subject, body, body_html):
-    # Create a new SES resource and specify a region.
-    client = boto3.client('ses',region_name=AWS_SES_REGION)
-
-    # Try to send the email.
     try:
-        #Provide the contents of the email.
-        response = client.send_email(
-            Destination={
-                'ToAddresses': [
-                    recipient,
-                ],
-            },
-            Message={
-                'Body': {
-                    'Html': {
-                        'Charset': CHARSET,
-                        'Data': body_html,
-                    },
-                    'Text': {
-                        'Charset': CHARSET,
-                        'Data': body,
-                    },
-                },
-                'Subject': {
-                    'Charset': CHARSET,
-                    'Data': subject,
-                },
-            },
-            Source=AWS_EMAIL_SENDER_ADDRESS,
-        )
-    except ClientError as e:
-        pass
+        payload = {'from': AWS_EMAIL_SENDER_ADDRESS, 'to': recipient, 'subject': subject, 'text': body, 'html': body_html}
+        r = requests.post("https://api.mailgun.net/v3/titeeni.city/messages", data=payload, auth=('api', MAILGUN_API_KEY))
+
+        if r.status_code < 300 and r.status_code >= 200:
+            return True
+
+        return False
+    except Exception:
+        traceback.print_exc()
+        return False
 
 def send_registration_email(email, link, username):
     send_email(email, SUBJECT_REGISTRATION_SUCCESS, 
@@ -202,6 +181,11 @@ def serialize_player(player):
 
         return res
 
+    def get_itemurl(item):
+        if not item:
+            return ""
+        return get_item_imgurl_and_name(item)['url']
+
     return {
         'username': player.username,
         'email': player.email,
@@ -211,6 +195,11 @@ def serialize_player(player):
         'clothing': player.clothing,
         'item': player.item,
         'drink': player.drink,
+
+        'hat_url': get_itemurl(player.hat),
+        'clothing_url': get_itemurl(player.clothing),
+        'item_url': get_itemurl(player.item),
+        'drink_url': get_itemurl(player.drink),
         
         'avail_hats': serialize_list_attribute_contents(player.avail_hats),
         'avail_clothings': serialize_list_attribute_contents(player.avail_clothings),
@@ -258,6 +247,8 @@ def index_view():
                 username = request.form['username']
                 email = request.form['email']
                 guild = request.form['guild']
+                if not validate_uname_and_email(username, email):
+                    raise Exception("")
 
                 player = PlayerModel(key, username=username, email=email, guild=guild)
                 player.save()
@@ -270,6 +261,7 @@ def index_view():
             else:
                 return FAILED_REGISTRATION_MSG, 400
     except Exception:
+        traceback.print_exc()
         return FAILED_REGISTRATION_MSG, 400
 
     return render_template('index.html', captchakey=CAPTCHA_PUBLIC_KEY)

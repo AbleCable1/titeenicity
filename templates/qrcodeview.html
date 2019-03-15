@@ -20,10 +20,23 @@
     <!-- Bootstrap core JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <style type="text/css">
+      body {
+        background-color: black;
+        font-family: monospace;
+        color: #008800;
+
+      }
+      label {
+        font-size: 1.35em;
+      }
+    </style>
+
   </head>
 
   <body>
     <div class="container">
+    <img src="https://svgshare.com/i/Bkt.svg" style="display:block;width:70%;margin-top:20px;">
     {% if not opened %}
     <h2>Onnittelut! Löysit aarrearkun!</h2>
     <img src="{{ url_for('static', filename = 'chest-unopened.png') }}" style="width:128px;height:128px;">
@@ -55,6 +68,8 @@
       <a href="{{playerlink}}" class="btn btn-success btn-large">Siirry hahmosivulle</a>
 
     {% endif %}
+    <h4>Yhteistyössä:</h4>
+    <img src="https://www.siili.com/themes/siili_2017/logo.svg" style="display:block;width:70%;margin-top:20px;">
     </div>
   </body>
 
