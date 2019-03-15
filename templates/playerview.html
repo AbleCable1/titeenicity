@@ -20,11 +20,50 @@
     <!-- Bootstrap core JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <style type="text/css">
+      body {
+        background-color: black;
+        font-family: monospace;
+        color: #008800;
+
+      }
+      label {
+        font-size: 1.35em;
+      }
+      .img-container {
+        position: relative;
+        margin: 20px;
+        width: 320px;
+        height: 400px;
+      }
+      .imag {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 320px;
+        height: 400px;
+      }
+    </style>
   </head>
 
   <body>
-    <div class="container">
+    <div class="container" style="padding-top:20px;">
     <h2>Hei {{player.username}} <small>({{player.guild}})</small>!</h2>
+    <div class="img-container">
+      <img src="{{ url_for('static', filename = 'hahmo.png') }}" class="imag">
+      {% if player.clothing %}
+        <img src="{{ url_for('static', filename = player.clothing_url) }}" class="imag" style="z-index:100;">
+      {% endif %}
+      {% if player.hat %}
+        <img src="{{ url_for('static', filename = player.hat_url) }}" class="imag" style="z-index:200;">
+      {% endif %}
+      {% if player.item %}
+        <img src="{{ url_for('static', filename = player.item_url) }}" class="imag" style="z-index:300;">
+      {% endif %}
+      {% if player.drink %}
+        <img src="{{ url_for('static', filename = player.drink_url) }}" class="imag" style="z-index:400;">
+      {% endif %}
+    </div>
     <p>Alla voit muokata pelihahmoasi valitsemalla hahmosi asusteet, taisteluvälineen ja juoman. Älä kuitenkaan panikoi, mikäli vaihtoehdot näyttävät niukoilta, sillä lisää kaikenlaisia esineitä voit löytää salaperäisiä qr-koodeja seuraamalla.</p>
     <form action="" method="post" id="register_form">
         <div class="form-group">
@@ -68,6 +107,8 @@
           <input type="submit" class="btn btn-primary btn-large" value="Tallenna">
         </div>
     </form>
+    <h4>Yhteistyössä:</h4>
+    <img src="https://www.siili.com/themes/siili_2017/logo.svg" style="display:block;width:70%;margin-top:20px;">
     </div>
   </body>
 
