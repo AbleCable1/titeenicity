@@ -1,2 +1,4 @@
 **/__pycache__
 **/zappa_settings.json
+.DS_*
+*.pyc
